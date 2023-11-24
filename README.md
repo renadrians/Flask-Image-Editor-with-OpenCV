@@ -1,0 +1,2 @@
+# Flask-Image-Editor-with-OpenCV
+ This repository contains a Flask-based web application that utilizes the OpenCV library to perform various image editing operations. The application provides functionalities to upload, edit, and download images. It includes features such as flipping images vertically and horizontally, applying sharpening effects, blurring images, converting images to black and white, and removing backgrounds using an external API.
