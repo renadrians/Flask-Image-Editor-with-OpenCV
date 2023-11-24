@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Image</title>
+<html>
+
+<head>
+    <title>Edit Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url(https://img.freepik.com/free-vector/variety-cute-shapes-abstract-background_23-2148544989.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border: 10px solid #535353;
+            text-align: center;
+        }
+
+        .container h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .h1 {
+            font-size: 40px;
+            font-weight: 800;
+        }
+
+        .img-fluid {
+            max-width: 70%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .form-check {
+            margin-bottom: 10px;
+            text-align: left;
+            margin: 10px;
+            background-color: #b6b0b0;
+            border-radius: 5px;
+        }
+
+        .form-check-inline {
+            font-weight: bold;
+        }
+
+        .form-check-input {
+            margin-right: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .export-btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .export-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .container h1 {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        .form-check-label.md {
+            margin-left: 40px;
+        }
+
+        .form-check-label.remove {
+            margin-left: 60px;
+        }
+
+        .form-check-label.sharpen {
+            margin-left: 20px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #ff0b0b;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-danger:hover {
+            background-color: #ee0606;
+        }
+
+        .btn-success {
+            background-color: #36b86c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-success:hover {
+            background-color: #46d180;
+        }
+    </style>
+
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this image?');
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="header">
+            <h1 class="h1"><i class="bi bi-pencil-square"></i> Edit Image</h1>
+            <a href="{{ url_for('download_image', filename=image.filename) }}" class="export-btn" download>
+                <i class="bi bi-download"></i> Download
+            </a>            
+        </div>
+        <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="Original Image"
+            class="img-fluid mb-3">
+        <form action="{{ url_for('edit_image', image_id=image.id) }}" method="POST">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label md" for="flipVertical"><i class="bi bi-arrow-left-right"></i></label>
+                <input class="form-check-input" type="checkbox" name="options" value="flip_vertical" id="flipVertical"
+                    onclick="handleCheckboxChange('flipVertical')">
+                <br> Flip Vertical
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label remove" for="removeBackground"><i class="bi bi-image"></i></label>
+                <input class="form-check-input" type="checkbox" name="options" value="removeBackground"
+                    id="removeBackground" onclick="handleCheckboxChange('removeBackground')">
+                <br> Remove Background
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label md" for="flipHorizontal"><i class="bi bi-arrow-left-right"></i></label>
+                <input class="form-check-input" type="checkbox" name="options" value="flip_horizontal"
+                    id="flipHorizontal" onclick="handleCheckboxChange('flipHorizontal')">
+                <br> Flip Horizontal
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label sharpen" for="sharpen"><i class="bi bi-pencil"></i></label>
+                <input class="form-check-input" type="checkbox" name="options" value="sharpen" id="sharpen"
+                    onclick="handleCheckboxChange('sharpen')">
+                <br> Sharpen
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="blur"><i class="bi bi-disc"></i></label>
+                <input class="form-check-input" type="checkbox" name="options" value="blur" id="blur"
+                    onclick="handleCheckboxChange('blur')">
+                <br> Blur
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label md" for="blackWhite"><i class="bi bi-yin-yang"></i></label>
+                <input class="form-check-input" type="checkbox" name="options" value="bnw" id="blackWhite"
+                    onclick="handleCheckboxChange('blackWhite')">
+                <br> Black & White
+            </div>
+            <div class="button-container">
+                <div>
+                    <button type="submit" class="btn btn-success"><i class="bi bi-check"></i> Apply Changes</button>
+                    <a href="/" class="btn btn-primary"><i class="bi bi-house-door"></i> Back To Home</a>
+                </div>
+        </form>
+        <form action="{{ url_for('delete_image', image_id=image.id) }}" method="POST" onsubmit="return confirmDelete()">
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete Image</button>
+        </form>
+    </div>
+    </div>
+</body>
+
+</html>
